@@ -1,4 +1,5 @@
-﻿using HotelProject.Business.Abstract;
+﻿using AutoMapper;
+using HotelProject.Business.Abstract;
 using HotelProject.Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,11 @@ namespace HotelProject.Api.Controllers
     {
 
         private readonly IRoomService _roomService;
+        private readonly IMapper _mapper;
 
-        public RoomController(IRoomService roomService)
+        public RoomController(IRoomService roomService, IMapper mapper)
         {
+            _mapper = mapper;
             _roomService = roomService;
         }
 

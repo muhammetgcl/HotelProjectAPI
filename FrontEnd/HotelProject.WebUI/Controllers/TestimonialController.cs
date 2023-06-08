@@ -1,4 +1,4 @@
-﻿using HotelProject.WebUI.Models.Staff;
+﻿using HotelProject.WebUI.Models.Testimonial;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace HotelProject.WebUI.Controllers
 {
-    public class StaffController : Controller
+    public class TestimonialController : Controller
     {
         private readonly IHttpClientFactory _clientFactory;
-        private readonly string apiUri = "http://localhost:5000/api/Staff";
+        private readonly string apiUri = "http://localhost:5000/api/Testimonial";
 
-        public StaffController(IHttpClientFactory clientFactory)
+        public TestimonialController(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
         }
@@ -27,23 +27,23 @@ namespace HotelProject.WebUI.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<StaffViewModel>>(jsonData);
+                var values = JsonConvert.DeserializeObject<List<TestimonialViewModel>>(jsonData);
                 return View(values);
             }
             return View();
         }
 
         [HttpGet]
-        public IActionResult AddStaff()
+        public IActionResult AddTestimonial()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task <IActionResult> AddStaff(AddStaffViewModel addStaffViewModel)
+        public async Task<IActionResult> AddTestimonial(AddTestimonialViewModel addTestimonialViewModel)
         {
             var client = _clientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(addStaffViewModel);
+            var jsonData = JsonConvert.SerializeObject(addTestimonialViewModel);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await client.PostAsync(apiUri, stringContent);
             if (response.IsSuccessStatusCode)
@@ -53,10 +53,10 @@ namespace HotelProject.WebUI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> DeleteStaff(int id)
+        public async Task<IActionResult> DeleteTestimonial(int id)
         {
             var client = _clientFactory.CreateClient();
-            var response = await client.DeleteAsync($"http://localhost:5000/api/Staff/{id}");
+            var response = await client.DeleteAsync($"http://localhost:5000/api/Testimonial/{id}");
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -65,24 +65,24 @@ namespace HotelProject.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UpdateStaff(int id)
+        public async Task<IActionResult> UpdateTestimonial(int id)
         {
             var client = _clientFactory.CreateClient();
-            var response = await client.GetAsync($"http://localhost:5000/api/Staff/{id}");
+            var response = await client.GetAsync($"http://localhost:5000/api/Testimonial/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var jsonData = await response.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateStaffViewModel>(jsonData);
+                var values = JsonConvert.DeserializeObject<UpdateTestimonialModel>(jsonData);
                 return View(values);
             }
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateStaff(UpdateStaffViewModel updateStaffViewModel)
+        public async Task<IActionResult> UpdateTestimonial(UpdateTestimonialModel updateTestimonialModel)
         {
             var client = _clientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateStaffViewModel);
+            var jsonData = JsonConvert.SerializeObject(updateTestimonialModel);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await client.PutAsync(apiUri, stringContent);
 
